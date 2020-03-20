@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, IonPage } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 
@@ -22,16 +22,30 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import BookDetails from './pages/BookDetails';
+import ListBooks from './pages/Livros';
+import ListAuthors from './pages/Autores';
+import MenuPage from './pages/Menu';
+import TabsPage from './pages/Abas';
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" component={Home} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+  <IonSplitPane contentId="main">
+    <MenuPage/>
+    <IonPage id="main">
+      <IonApp>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route path="/home" component={Home} exact={true} />
+            <Route path="/book/:bookID" component={BookDetails} exact />
+            <Route path="/author" component={ListAuthors} exact />
+            <Route path="/author/books/:authorID" component={ListBooks} exact />
+            <Route path="/tabs" component={TabsPage} />
+            <Route exact path="/" render={() => <Redirect to="/tabs" />} />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonApp>
+    </IonPage>
+  </IonSplitPane>
 );
 
 export default App;
